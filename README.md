@@ -147,3 +147,4 @@ MIT License — free to use, modify, and extend.
 ## 👤 Author
 
 Built as a demonstration of **HTML5 canvas game mechanics** using modern TypeScript and PixiJS patterns.
+No React dependencies.
