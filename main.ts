@@ -46,6 +46,50 @@ let rotation = 0;
 const segmentAngle = 360 / segments.length;
 const WHEEL_RADIUS = 200;
 
+// Sound Manager for synthesized effects
+class SoundManager {
+    private ctx: AudioContext | null = null;
+
+    constructor() {
+        try {
+            const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+            this.ctx = new AudioContextClass();
+        } catch (e) {
+            console.error("Web Audio API not supported", e);
+        }
+    }
+
+    public init() {
+        if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    }
+
+    public playTick() {
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        // Pleasant "tick" sound (high pitch short decay)
+        const now = this.ctx.currentTime;
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+
+        osc.start(now);
+        osc.stop(now + 0.1);
+    }
+}
+
+const soundManager = new SoundManager();
+
 function createGame() {
     // 1. Background Effects (Simple Glows)
     createBackgroundGlows();
@@ -380,6 +424,9 @@ function createSpinButton() {
 function onSpinClick() {
     if (isSpinning) return;
 
+    // Initialize audio context on user interaction
+    soundManager.init();
+
     isSpinning = true;
     spinButton.alpha = 0.5;
     spinButton.cursor = 'default';
@@ -414,6 +461,9 @@ function onSpinClick() {
     const tick = (ticker: PIXI.Ticker) => {
         elapsed += ticker.deltaMS;
 
+        // Current rotation before update
+        const prevRot = wheelContainer.rotation;
+
         if (elapsed >= duration) {
             // Finished
             wheelContainer.rotation = targetRad % (Math.PI * 2);
@@ -428,7 +478,20 @@ function onSpinClick() {
             // Ease Out Cubic: 1 - pow(1 - x, 3)
             const t = elapsed / duration;
             const ease = 1 - Math.pow(1 - t, 3);
-            wheelContainer.rotation = startRad + changeRad * ease;
+            const currentRot = startRad + changeRad * ease;
+            wheelContainer.rotation = currentRot;
+
+            // Check for tick (passing segment boundaries)
+            // Segment angle in radians
+            const segRad = segmentAngle * (Math.PI / 180);
+            
+            // Calculate "total" rotation index
+            const prevIndex = Math.floor(prevRot / segRad);
+            const currIndex = Math.floor(currentRot / segRad);
+
+            if (currIndex > prevIndex) {
+               soundManager.playTick();
+            }
         }
     };
 
