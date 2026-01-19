@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spin & Win - PixiJS</title>
+  <link rel="stylesheet" href="./style.css" />
+  <meta name="description" content="Spin the wheel for amazing prizes!" />
+</head>
+
+<body>
+  <!-- Game Container for PixiJS -->
+  <div id="game-container"></div>
+
+  <!-- UI Overlays (kept in HTML for accessibility/ease) -->
+  <div class="ui-layer">
+    <div class="title-section">
+      <h1 class="title">🎰 Spin & Win</h1>
+      <p class="subtitle">Spin the wheel for amazing prizes!</p>
+    </div>
+
+    <div class="prize-modal" id="prizeModal">
+      <div class="prize-content">
+        <div class="prize-header">🎉 Congratulations! 🎉</div>
+        <span class="prize-icon" id="prizeIcon"></span>
+        <p class="prize-text" id="prizeText"></p>
+        <button class="prize-close-btn" id="prizeCloseBtn">Claim Prize</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./main.ts"></script>
+</body>
+
+</html>
