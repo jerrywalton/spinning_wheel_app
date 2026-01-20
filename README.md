@@ -120,7 +120,7 @@ You can easily:
 
 * Change prize labels and colors
 * Adjust spin duration and easing
-* Add sound effects
+* Change sound effects
 * Hook the result into:
 
   * Backend APIs
@@ -131,7 +131,6 @@ You can easily:
 
 ## 📈 Potential Extensions
 
-* 🎵 Sound effects
 * 🪙 Weighted probabilities
 * 🌐 Server-side spin validation
 * 🤖 AI-generated prize logic
@@ -145,7 +144,7 @@ MIT License — free to use, modify, and extend.
 
 ---
 
-## 👤 Author
+## 👤 Author - Jerry Walton 
 
 Built as a demonstration of **HTML5 canvas game mechanics** using modern TypeScript and PixiJS patterns.
 No React dependencies.
