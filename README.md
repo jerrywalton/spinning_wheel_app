@@ -4,6 +4,8 @@
 A classic **dynamically drawn spinning wheel** game built with **HTML5**, **TypeScript**, and the **PixiJS** game rendering library.  
 The wheel is rendered programmatically (no sprites), animated with smooth easing, and paired with accessible HTML UI overlays.
 
+![Spinning Wheel App](./spinning_wheel_app.png)
+
 This project is designed to demonstrate **canvas-based rendering**, **game-style animation**, and **clean separation between rendering and UI logic**.
 
 ---

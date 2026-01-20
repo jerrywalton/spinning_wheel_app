@@ -178,7 +178,7 @@ function drawWheel() {
         // Calculate parameters for the segment shape
         const inset = 1;
         const cornerRadius = 8;
-        const hubRadius = 35;
+        const hubRadius = 39;
         const rOuter = WHEEL_RADIUS - inset;
         const rInner = hubRadius + inset;
 
@@ -274,6 +274,13 @@ function drawWheel() {
                 fontFamily: 'Arial',
                 fontSize: 32,
                 fill: '#ffffff',
+                dropShadow: {
+                    alpha: 0.6,
+                    angle: Math.PI / 6,
+                    blur: 6,
+                    color: '#000000',
+                    distance: 5,
+                },
             }
         });
         iconText.anchor.set(0.5);
@@ -289,6 +296,13 @@ function drawWheel() {
                 fontSize: 16,
                 fontWeight: 'bold',
                 fill: segment.textColor,
+                dropShadow: {
+                    alpha: 0.6,
+                    angle: Math.PI / 6,
+                    blur: 4,
+                    color: '#000000',
+                    distance: 4,
+                },
             }
         });
         labelText.anchor.set(0.5);
@@ -303,9 +317,18 @@ function drawWheel() {
         contentContainer.addChild(labelText);
     });
 
+    // Center Hub Shadow
+    const hubShadow = new PIXI.Graphics();
+    hubShadow.circle(0, 0, 39);
+    hubShadow.fill({ color: 0x000000, alpha: 0.5 });
+    hubShadow.filters = [new PIXI.BlurFilter({ strength: 5 })];
+    hubShadow.x = 2; // Offset
+    hubShadow.y = 4;
+    wheelContainer.addChild(hubShadow);
+
     // Center Hub
     const hub = new PIXI.Graphics();
-    hub.circle(0, 0, 35);
+    hub.circle(0, 0, 39);
     hub.fill({ color: 0x1e1b4b });
     hub.stroke({ width: 3, color: 0xFBBF24 });
     wheelContainer.addChild(hub);
@@ -321,7 +344,7 @@ function drawWheel() {
     const ring = new PIXI.Graphics();
     ring.circle(0, 0, WHEEL_RADIUS + 6);
     //hub.fill({ color: 0x1e1b4b });
-    ring.stroke({ width: 3, color: 0xFBBF24 });
+    ring.stroke({ width: 3, color: 0x38BDF8 }); // Light blue
     wheelContainer.addChild(ring);
 }
 
@@ -338,9 +361,9 @@ function drawPointer() {
         18, -32,
         0, 0
     ]);
-    shadow.fill({ color: 0x000000, alpha: 0.3 });
-    shadow.filters = [new PIXI.BlurFilter({ strength: 2 })];
-    shadow.y = 4; // Offset
+    shadow.fill({ color: 0x000000, alpha: 0.5 });
+    shadow.filters = [new PIXI.BlurFilter({ strength: 4 })];
+    shadow.y = 8; // Offset
     pointerContainer.addChild(shadow);
 
     // 2. Pointer Body
@@ -357,7 +380,7 @@ function drawPointer() {
     const updatePointerPos = () => {
         if (!wheelContainer) return;
         pointerContainer.x = wheelContainer.x;
-        pointerContainer.y = wheelContainer.y - WHEEL_RADIUS + 10; // Overlap slightly
+        pointerContainer.y = wheelContainer.y - WHEEL_RADIUS + 16; // Overlap slightly
     };
 
     updatePointerPos();
@@ -484,13 +507,13 @@ function onSpinClick() {
             // Check for tick (passing segment boundaries)
             // Segment angle in radians
             const segRad = segmentAngle * (Math.PI / 180);
-            
+
             // Calculate "total" rotation index
             const prevIndex = Math.floor(prevRot / segRad);
             const currIndex = Math.floor(currentRot / segRad);
 
             if (currIndex > prevIndex) {
-               soundManager.playTick();
+                soundManager.playTick();
             }
         }
     };
