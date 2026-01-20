@@ -1,4 +1,3 @@
-```md
 # 🎡 spinning_wheel_app
 
 A classic **dynamically drawn spinning wheel** game built with **HTML5**, **TypeScript**, and the **PixiJS** game rendering library.  
